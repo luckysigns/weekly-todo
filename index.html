@@ -6,468 +6,139 @@
 <title>My Week</title>
 <style>
   :root {
-    --bg: #f6f5f2;
-    --card: #ffffff;
-    --border: #e4e1da;
-    --text: #2b2a27;
-    --muted: #8a8579;
-    --accent: #4a6b5a;
-    --accent-light: #e7efe9;
-    --danger: #b5564a;
-    --danger-light: #f7e9e7;
-    --today: #f0e6d2;
-    --selected: #dce8f4;
-    --cat-work: #4d6f96;
-    --cat-travel: #a87a3a;
-    --cat-camp: #4a6b5a;
-    --cat-personal: #8a5b8f;
-    --cat-other: #8a8579;
+    --bg: #f6f5f2; --card: #ffffff; --border: #e4e1da; --text: #2b2a27; --muted: #8a8579;
+    --accent: #4a6b5a; --accent-light: #e7efe9; --danger: #b5564a; --danger-light: #f7e9e7;
+    --today: #f0e6d2; --selected: #dce8f4;
+    --cat-work: #4d6f96; --cat-travel: #a87a3a; --cat-camp: #4a6b5a; --cat-personal: #8a5b8f; --cat-other: #8a8579;
   }
   * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-  }
-  header {
-    padding: 20px 24px 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  header h1 {
-    font-size: 22px;
-    margin: 0;
-    font-weight: 600;
-  }
-  .nav-controls {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .nav-controls button {
-    border: 1px solid var(--border);
-    background: var(--card);
-    border-radius: 8px;
-    padding: 6px 12px;
-    cursor: pointer;
-    font-size: 14px;
-    color: var(--text);
-  }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); }
+  header { padding: 20px 24px 8px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  header h1 { font-size: 22px; margin: 0; font-weight: 600; }
+  .nav-controls { display: flex; align-items: center; gap: 8px; }
+  .nav-controls button { border: 1px solid var(--border); background: var(--card); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 14px; color: var(--text); }
   .nav-controls button:hover { background: var(--accent-light); }
-  .range-label {
-    font-size: 14px;
-    color: var(--muted);
-    min-width: 160px;
-    text-align: center;
-  }
-  main {
-    padding: 8px 24px 32px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+  .range-label { font-size: 14px; color: var(--muted); min-width: 160px; text-align: center; }
+  main { padding: 8px 24px 32px; max-width: 1100px; margin: 0 auto; }
 
-  /* Trip status bar */
-  .trip-status {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .status-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .status-card label {
-    font-size: 11px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-  .status-card > input {
-    border: none;
-    outline: none;
-    font-size: 14.5px;
-    font-family: inherit;
-    color: var(--text);
-    padding: 2px 0;
-    background: transparent;
-  }
+  .trip-status { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
+  .status-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+  .status-card.wide { grid-column: 1 / -1; }
+  .status-card label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+  .status-card > input { border: none; outline: none; font-size: 14.5px; font-family: inherit; color: var(--text); padding: 2px 0; background: transparent; }
   .status-card input::placeholder { color: #c9c5ba; }
-  .status-subrow {
-    display: flex;
-    gap: 10px;
-    align-items: end;
-    margin-top: 4px;
-  }
-  .status-subfield {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex: 1;
-    min-width: 0;
-  }
-  .status-subfield label {
-    font-size: 10px;
-  }
-  .status-subfield input {
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 5px 6px;
-    font-size: 12.5px;
-    font-family: inherit;
-  }
-  .suggest-btn {
-    border: 1px solid var(--border);
-    background: var(--accent-light);
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 12px;
-    cursor: pointer;
-    color: var(--text);
-    white-space: nowrap;
-    height: 30px;
-  }
+  .status-subrow { display: flex; gap: 10px; align-items: end; margin-top: 4px; }
+  .status-subfield { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+  .status-subfield label { font-size: 10px; }
+  .status-subfield input { border: 1px solid var(--border); border-radius: 6px; padding: 5px 6px; font-size: 12.5px; font-family: inherit; width: 100%; }
+  .suggest-btn { border: 1px solid var(--border); background: var(--accent-light); border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer; color: var(--text); white-space: nowrap; height: 30px; }
   .suggest-btn:hover { background: #dcebe2; }
 
-  /* Sync panel */
-  .sync-panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 20px;
-    padding: 4px 14px;
-  }
-  .sync-panel summary {
-    cursor: pointer;
-    font-size: 13.5px;
-    font-weight: 600;
-    padding: 10px 0;
-    list-style: none;
-  }
+  .roadmap-list { display: flex; flex-direction: column; gap: 6px; margin: 6px 0 10px; }
+  .roadmap-row { display: flex; align-items: center; gap: 10px; background: var(--accent-light); border-radius: 8px; padding: 6px 10px; font-size: 13px; }
+  .roadmap-row .rr-num { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .roadmap-row .rr-main { flex: 1; min-width: 0; }
+  .roadmap-row .rr-loc { font-weight: 600; }
+  .roadmap-row .rr-dates { color: var(--muted); font-size: 11.5px; }
+  .roadmap-row .rr-del { border: none; background: transparent; color: var(--danger); cursor: pointer; font-size: 12px; padding: 3px 8px; border-radius: 6px; flex-shrink: 0; }
+  .roadmap-row .rr-del:hover { background: var(--danger-light); }
+  .roadmap-empty { font-size: 13px; color: var(--muted); margin: 4px 0 10px; }
+  .roadmap-add { display: grid; grid-template-columns: 1.6fr 1fr 1fr auto auto; gap: 8px; align-items: end; }
+  .roadmap-add .field { display: flex; flex-direction: column; gap: 2px; }
+  .roadmap-add .field label { font-size: 10px; color: var(--muted); text-transform: uppercase; }
+  .roadmap-add input { border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 12.5px; font-family: inherit; }
+  .roadmap-add button { border: 1px solid var(--border); background: var(--accent); color: #fff; border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer; height: 32px; white-space: nowrap; }
+  .roadmap-add button.secondary { background: var(--card); color: var(--text); }
+
+  .sync-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px; padding: 4px 14px; }
+  .sync-panel summary { cursor: pointer; font-size: 13.5px; font-weight: 600; padding: 10px 0; list-style: none; }
   .sync-panel summary::-webkit-details-marker { display: none; }
   .sync-panel summary::before { content: "⚙ "; }
   #syncStatusLabel { font-weight: 400; color: var(--muted); }
   .sync-body { padding: 4px 0 14px; }
   .sync-body .field { margin-bottom: 8px; max-width: 420px; }
   .sync-body .field label { font-size: 11px; color: var(--muted); text-transform: uppercase; }
-  .sync-body .field input {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 7px 9px;
-    font-size: 13px;
-    font-family: inherit;
-  }
-  .sync-body button {
-    border: 1px solid var(--border);
-    background: var(--accent);
-    color: #fff;
-    border-radius: 8px;
-    padding: 7px 14px;
-    font-size: 13px;
-    cursor: pointer;
-    margin-right: 8px;
-    margin-top: 4px;
-  }
-  .sync-body button.secondary {
-    background: var(--card);
-    color: var(--text);
-  }
-  .sync-body button.danger {
-    background: var(--danger);
-  }
-  .sync-note {
-    font-size: 12px;
-    color: var(--muted);
-    margin: 6px 0 0;
-    max-width: 500px;
-  }
-  .sync-panel pre {
-    background: #f0efe9;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 11.5px;
-    overflow-x: auto;
-    white-space: pre-wrap;
-    margin-top: 10px;
-  }
+  .sync-body .field input { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 7px 9px; font-size: 13px; font-family: inherit; }
+  .sync-body button { border: 1px solid var(--border); background: var(--accent); color: #fff; border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; margin-right: 8px; margin-top: 4px; }
+  .sync-body button.secondary { background: var(--card); color: var(--text); }
+  .sync-body button.danger { background: var(--danger); }
+  .sync-note { font-size: 12px; color: var(--muted); margin: 6px 0 0; max-width: 500px; }
+  .sync-panel pre { background: #f0efe9; border-radius: 8px; padding: 12px; font-size: 11.5px; overflow-x: auto; white-space: pre-wrap; margin-top: 10px; }
 
-  .week-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-  .day-col {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    min-height: 170px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 10px; }
+  .day-col { background: var(--card); border: 1px solid var(--border); border-radius: 12px; min-height: 170px; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
   .day-col.today { background: var(--today); border-color: #dfcf9f; }
   .day-col.selected { background: var(--selected); border-color: #a9c4de; }
   .day-col.drag-over { outline: 2px dashed var(--accent); outline-offset: -2px; }
   .day-col.current-location { border-top: 3px solid var(--accent); }
   .day-col.heading-day { border-top: 3px solid var(--cat-travel); }
   .day-col.current-location.heading-day { border-top: 3px solid var(--accent); border-bottom: 3px solid var(--cat-travel); }
-  .location-tag {
-    font-size: 10px;
-    font-weight: 600;
-    background: var(--accent);
-    color: #fff;
-    padding: 2px 6px;
-    border-radius: 6px;
-    align-self: flex-start;
-    line-height: 1.4;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+  .location-tag { font-size: 10px; font-weight: 600; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 6px; align-self: flex-start; line-height: 1.4; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .location-tag.heading { background: var(--cat-travel); }
-  .day-head {
-    font-size: 12px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-  }
-  .day-date {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 4px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-  }
+  .day-head { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+  .day-date { font-size: 18px; font-weight: 600; margin-bottom: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; }
   .day-date:hover { background: rgba(0,0,0,0.06); }
   .day-date.selected { background: var(--accent); color: #fff; }
-  .day-task {
-    background: var(--accent-light);
-    border-radius: 8px;
-    padding: 6px 8px;
-    font-size: 12.5px;
-    cursor: grab;
-    line-height: 1.35;
-    border-left: 3px solid var(--cat-other);
-    position: relative;
-  }
+  .day-task { background: var(--accent-light); border-radius: 8px; padding: 6px 8px; font-size: 12.5px; cursor: grab; line-height: 1.35; border-left: 3px solid var(--cat-other); position: relative; }
   .day-task.done { opacity: 0.45; text-decoration: line-through; }
   .day-task .t-time { font-weight: 600; color: var(--accent); display: block; }
   .day-task .t-loc { color: var(--muted); display: block; }
-  .day-task .t-move {
-    display: flex;
-    gap: 6px;
-    margin-top: 3px;
-  }
-  .day-task .t-move button {
-    border: none;
-    background: rgba(255,255,255,0.7);
-    border-radius: 4px;
-    font-size: 10px;
-    padding: 1px 5px;
-    cursor: pointer;
-    color: var(--text);
-  }
+  .day-task .t-range { color: var(--muted); font-size: 10.5px; display: block; }
+  .day-task .t-move { display: flex; gap: 6px; margin-top: 3px; }
+  .day-task .t-move button { border: none; background: rgba(255,255,255,0.7); border-radius: 4px; font-size: 10px; padding: 1px 5px; cursor: pointer; color: var(--text); }
   .day-task .t-move button:hover { background: #fff; }
-  .day-empty {
-    font-size: 12px;
-    color: #c9c5ba;
-    padding: 4px 2px;
-  }
+  .day-empty { font-size: 12px; color: #c9c5ba; padding: 4px 2px; }
 
-  .section-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0 0 12px;
-  }
+  .section-title { font-size: 16px; font-weight: 600; margin: 0 0 12px; }
 
-  /* Unscheduled / deadlines */
-  .unscheduled-wrap {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 20px;
-  }
+  .unscheduled-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 20px; }
   .unscheduled-wrap.drag-over { outline: 2px dashed var(--accent); outline-offset: -2px; }
-  .unscheduled-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .unscheduled-chip {
-    background: var(--accent-light);
-    border-left: 3px solid var(--cat-other);
-    border-radius: 8px;
-    padding: 6px 10px;
-    font-size: 12.5px;
-    cursor: grab;
-  }
-  .unscheduled-chip .u-deadline {
-    display: block;
-    font-size: 11px;
-    color: var(--muted);
-  }
+  .unscheduled-items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .unscheduled-chip { background: var(--accent-light); border-left: 3px solid var(--cat-other); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; cursor: grab; }
+  .unscheduled-chip .u-deadline { display: block; font-size: 11px; color: var(--muted); }
   .unscheduled-chip.overdue .u-deadline { color: var(--danger); font-weight: 600; }
   .unscheduled-empty { font-size: 13px; color: var(--muted); }
 
-  .add-form {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    display: grid;
-    grid-template-columns: 1.6fr 1fr 1fr 0.9fr 1.2fr 1fr auto auto;
-    gap: 10px;
-    margin-bottom: 20px;
-    align-items: end;
-  }
+  .add-form { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: grid; grid-template-columns: 1.4fr 0.9fr 1fr 1fr 0.8fr 1fr 1fr auto auto; gap: 10px; margin-bottom: 20px; align-items: end; }
   .field { display: flex; flex-direction: column; gap: 4px; }
   .field label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
-  .field input, .field select {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 10px;
-    font-size: 14px;
-    font-family: inherit;
-    background: #fff;
-  }
-  .add-form button[type=submit] {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 14px;
-    cursor: pointer;
-    height: 38px;
-  }
+  .field input, .field select { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 14px; font-family: inherit; background: #fff; }
+  .add-form button[type=submit] { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px 16px; font-size: 14px; cursor: pointer; height: 38px; }
   .add-form button[type=submit]:hover { opacity: 0.9; }
-  .add-form button#cancelEditBtn {
-    background: var(--card);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 14px;
-    cursor: pointer;
-    height: 38px;
-  }
+  .add-form button#cancelEditBtn { background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 14px; cursor: pointer; height: 38px; }
 
-  .list-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .list-controls .filters {
-    display: flex;
-    gap: 8px;
-  }
-  .list-controls select {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 6px 8px;
-    font-size: 13px;
-    background: var(--card);
-  }
+  .list-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+  .list-controls .filters { display: flex; gap: 8px; }
+  .list-controls select { border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 13px; background: var(--card); }
 
-  .day-filter-bar {
-    display: none;
-    align-items: center;
-    gap: 10px;
-    background: var(--selected);
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 13px;
-    margin-bottom: 10px;
-  }
-  .day-filter-bar button {
-    border: none;
-    background: #fff;
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-size: 12px;
-    cursor: pointer;
-  }
+  .day-filter-bar { display: none; align-items: center; gap: 10px; background: var(--selected); border-radius: 8px; padding: 8px 12px; font-size: 13px; margin-bottom: 10px; }
+  .day-filter-bar button { border: none; background: #fff; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; }
 
-  .task-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .task-row {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--cat-other);
-    border-radius: 10px;
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .task-list { display: flex; flex-direction: column; gap: 8px; }
+  .task-row { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--cat-other); border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; }
   .task-row.done { opacity: 0.5; }
   .task-row.done .t-title { text-decoration: line-through; }
   .task-row input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
   .task-main { flex: 1; min-width: 0; }
   .t-title-row { display: flex; align-items: center; gap: 8px; }
   .t-title { font-size: 14.5px; font-weight: 500; }
-  .cat-badge {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    padding: 2px 7px;
-    border-radius: 20px;
-    color: #fff;
-    flex-shrink: 0;
-  }
+  .cat-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 0.03em; padding: 2px 7px; border-radius: 20px; color: #fff; flex-shrink: 0; }
   .t-meta { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
   .t-meta span:not(:last-child)::after { content: " · "; }
   .t-meta .overdue { color: var(--danger); font-weight: 600; }
-  .task-row .edit-btn, .task-row .del-btn {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 13px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    flex-shrink: 0;
-  }
+  .task-row .edit-btn, .task-row .del-btn { border: none; background: transparent; cursor: pointer; font-size: 13px; padding: 4px 8px; border-radius: 6px; flex-shrink: 0; }
   .task-row .edit-btn { color: var(--accent); }
   .task-row .edit-btn:hover { background: var(--accent-light); }
   .task-row .del-btn { color: var(--danger); }
   .task-row .del-btn:hover { background: var(--danger-light); }
 
-  .empty-state {
-    text-align: center;
-    color: var(--muted);
-    padding: 30px;
-    font-size: 14px;
-  }
+  .empty-state { text-align: center; color: var(--muted); padding: 30px; font-size: 14px; }
 
   @media (max-width: 800px) {
     .trip-status { grid-template-columns: 1fr; }
     .week-grid { grid-template-columns: repeat(7, minmax(90px,1fr)); overflow-x: auto; }
     .add-form { grid-template-columns: 1fr 1fr; }
+    .roadmap-add { grid-template-columns: 1fr 1fr; }
   }
 </style>
 </head>
@@ -500,14 +171,28 @@
       </div>
     </div>
     <div class="status-card">
-      <label for="statusNext">Heading to</label>
-      <input type="text" id="statusNext" placeholder="e.g. Arches NP">
-      <div class="status-subrow">
-        <div class="status-subfield">
-          <label for="statusNextDate">Target date</label>
-          <input type="date" id="statusNextDate">
+      <label>Next up</label>
+      <div id="roadmapNextPreview" style="font-size:14.5px; padding:2px 0;">Nothing planned yet</div>
+      <div style="font-size:11px; color:var(--muted);">See full roadmap below to add destinations weeks ahead.</div>
+    </div>
+    <div class="status-card wide">
+      <label>Roadmap</label>
+      <div class="roadmap-list" id="roadmapList"></div>
+      <div class="roadmap-add">
+        <div class="field">
+          <label for="destLocInput">Destination</label>
+          <input type="text" id="destLocInput" placeholder="e.g. Arches NP">
         </div>
-        <button type="button" id="suggestDateBtn" class="suggest-btn">Suggest</button>
+        <div class="field">
+          <label for="destStartInput">Arrive</label>
+          <input type="date" id="destStartInput">
+        </div>
+        <div class="field">
+          <label for="destEndInput">Leave</label>
+          <input type="date" id="destEndInput">
+        </div>
+        <button type="button" id="suggestDestBtn" class="secondary">Suggest date</button>
+        <button type="button" id="addDestBtn">Add destination</button>
       </div>
     </div>
   </section>
@@ -526,7 +211,7 @@
         </div>
         <button type="button" id="connectSupaBtn">Connect</button>
         <button type="button" id="showSqlBtn" class="secondary">Show setup SQL</button>
-        <p class="sync-note">This app auto-connects to your Supabase project on load using the key baked into the file, so you shouldn't need to touch this on a new device. Uses an open access policy on your two tables — fine for personal/solo use, just don't share the project URL/key. Disconnecting here just stops this browser from syncing; reload to reconnect.</p>
+        <p class="sync-note">Auto-connects using the key baked into this file. Open access policy on your tables — fine for personal use, just don't share the URL/key.</p>
         <pre id="setupSql" style="display:none;">-- Run once in your Supabase project's SQL editor
 
 create table if not exists todo_tasks (
@@ -534,31 +219,42 @@ create table if not exists todo_tasks (
   title text not null,
   category text default '',
   date date,
+  date_end date,
   time text,
   loc text,
   deadline date,
   done boolean default false,
   updated_at timestamptz default now()
 );
+alter table todo_tasks add column if not exists date_end date;
 
 create table if not exists trip_status (
   id text primary key default 'main',
   currently_in text,
   currently_in_start date,
   currently_in_end date,
-  heading_to text,
-  heading_to_date date,
+  updated_at timestamptz default now()
+);
+
+create table if not exists destinations (
+  id text primary key,
+  location text not null,
+  start_date date,
+  end_date date,
   updated_at timestamptz default now()
 );
 
 alter table todo_tasks enable row level security;
 alter table trip_status enable row level security;
+alter table destinations enable row level security;
 
 create policy "allow all todo_tasks" on todo_tasks for all using (true) with check (true);
 create policy "allow all trip_status" on trip_status for all using (true) with check (true);
+create policy "allow all destinations" on destinations for all using (true) with check (true);
 
 alter publication supabase_realtime add table todo_tasks;
-alter publication supabase_realtime add table trip_status;</pre>
+alter publication supabase_realtime add table trip_status;
+alter publication supabase_realtime add table destinations;</pre>
       </div>
       <div id="syncConnectedInfo" style="display:none;">
         <p id="syncConnectedText" class="sync-note"></p>
@@ -594,6 +290,10 @@ alter publication supabase_realtime add table trip_status;</pre>
     <div class="field">
       <label for="dateInput">Schedule (optional)</label>
       <input type="date" id="dateInput">
+    </div>
+    <div class="field">
+      <label for="dateEndInput">Through (optional)</label>
+      <input type="date" id="dateEndInput">
     </div>
     <div class="field">
       <label for="timeInput">Time</label>
@@ -639,11 +339,10 @@ alter publication supabase_realtime add table trip_status;</pre>
 (function() {
   const STORAGE_KEY = 'weekTodoApp.tasks';
   const STATUS_KEY = 'weekTodoApp.tripStatus';
+  const DEST_KEY = 'weekTodoApp.destinations';
   const SUPA_URL_KEY = 'weekTodoApp.supabaseUrl';
   const SUPA_ANON_KEY = 'weekTodoApp.supabaseAnonKey';
   const SUPA_DISABLED_KEY = 'weekTodoApp.supabaseDisabled';
-
-  // Baked-in defaults so the app auto-connects on any device without manual setup.
   const DEFAULT_SUPA_URL = 'https://ywjtbzxfdudrqsvsslzs.supabase.co';
   const DEFAULT_SUPA_KEY = 'sb_publishable_Vt5ul1fZGuwxG8zq_ejyNw_kJackpiu';
 
@@ -656,12 +355,12 @@ alter publication supabase_realtime add table trip_status;</pre>
   };
 
   let tasks = load();
+  let destinations = loadDestinations();
   let weekStart = startOfWeek(new Date());
   let selectedDays = new Set();
   let editingTaskId = null;
   let supaClient = null;
-  let supaChannelTasks = null;
-  let supaChannelStatus = null;
+  let supaChannelTasks = null, supaChannelStatus = null, supaChannelDest = null;
 
   const weekGrid = document.getElementById('weekGrid');
   const rangeLabel = document.getElementById('rangeLabel');
@@ -675,6 +374,8 @@ alter publication supabase_realtime add table trip_status;</pre>
   const categoryFilter = document.getElementById('categoryFilter');
   const unscheduledWrap = document.getElementById('unscheduledWrap');
   const unscheduledItems = document.getElementById('unscheduledItems');
+  const roadmapList = document.getElementById('roadmapList');
+  const roadmapNextPreview = document.getElementById('roadmapNextPreview');
 
   document.getElementById('prevBtn').addEventListener('click', () => { weekStart = addDays(weekStart, -7); render(); });
   document.getElementById('nextBtn').addEventListener('click', () => { weekStart = addDays(weekStart, 7); render(); });
@@ -688,28 +389,26 @@ alter publication supabase_realtime add table trip_status;</pre>
     const title = document.getElementById('titleInput').value.trim();
     const category = document.getElementById('categoryInput').value;
     const date = document.getElementById('dateInput').value || null;
+    let dateEnd = document.getElementById('dateEndInput').value || null;
     const time = document.getElementById('timeInput').value;
     const loc = document.getElementById('locInput').value.trim();
     const deadline = document.getElementById('deadlineInput').value || null;
     if (!title) return;
+    if (dateEnd && !date) dateEnd = null;
+    if (dateEnd && date && dateEnd < date) dateEnd = date;
 
     if (editingTaskId) {
       const t = tasks.find(x => x.id === editingTaskId);
       if (t) {
-        t.title = title; t.category = category; t.date = date;
+        t.title = title; t.category = category; t.date = date; t.dateEnd = dateEnd;
         t.time = time; t.loc = loc; t.deadline = deadline;
-        save();
-        syncTaskUpsert(t);
+        save(); syncTaskUpsert(t);
       }
       cancelEdit();
     } else {
-      const t = {
-        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-        title, category, date, time, loc, deadline, done: false
-      };
+      const t = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), title, category, date, dateEnd, time, loc, deadline, done: false };
       tasks.push(t);
-      save();
-      syncTaskUpsert(t);
+      save(); syncTaskUpsert(t);
       addForm.reset();
     }
     render();
@@ -720,6 +419,7 @@ alter publication supabase_realtime add table trip_status;</pre>
     document.getElementById('titleInput').value = t.title;
     document.getElementById('categoryInput').value = t.category || '';
     document.getElementById('dateInput').value = t.date || '';
+    document.getElementById('dateEndInput').value = t.dateEnd || '';
     document.getElementById('timeInput').value = t.time || '';
     document.getElementById('locInput').value = t.loc || '';
     document.getElementById('deadlineInput').value = t.deadline || '';
@@ -728,7 +428,6 @@ alter publication supabase_realtime add table trip_status;</pre>
     cancelEditBtn.style.display = 'inline-block';
     addForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
-
   function cancelEdit() {
     editingTaskId = null;
     addForm.reset();
@@ -737,8 +436,8 @@ alter publication supabase_realtime add table trip_status;</pre>
     cancelEditBtn.style.display = 'none';
   }
 
-  // ---- Trip status ----
-  const statusFields = ['statusHere', 'statusHereStart', 'statusHereEnd', 'statusNext', 'statusNextDate'];
+  // ---- Trip status (currently in) ----
+  const statusFields = ['statusHere', 'statusHereStart', 'statusHereEnd'];
   const tripStatus = loadStatus();
   statusFields.forEach(id => {
     const el = document.getElementById(id);
@@ -750,155 +449,163 @@ alter publication supabase_realtime add table trip_status;</pre>
       renderWeek();
     });
   });
-
-  document.getElementById('suggestDateBtn').addEventListener('click', () => {
-    let base;
-    const endVal = document.getElementById('statusHereEnd').value;
-    if (endVal) {
-      const [y, m, d] = endVal.split('-').map(Number);
-      base = new Date(y, m - 1, d);
-      base.setDate(base.getDate() + 1);
-    } else {
-      base = addDays(new Date(), 1);
-    }
-    const iso = toISODate(base);
-    document.getElementById('statusNextDate').value = iso;
-    tripStatus.statusNextDate = iso;
-    persistStatusLocal();
-    debouncedStatusSync();
-    renderWeek();
-  });
-
   function fillStatusInputs() {
-    statusFields.forEach(id => {
-      document.getElementById(id).value = tripStatus[id] || '';
-    });
+    statusFields.forEach(id => { document.getElementById(id).value = tripStatus[id] || ''; });
   }
   function loadStatus() {
-    try {
-      const raw = localStorage.getItem(STATUS_KEY);
-      return raw ? JSON.parse(raw) : {};
-    } catch (e) { return {}; }
+    try { const raw = localStorage.getItem(STATUS_KEY); return raw ? JSON.parse(raw) : {}; } catch (e) { return {}; }
   }
-  function persistStatusLocal() {
-    localStorage.setItem(STATUS_KEY, JSON.stringify(tripStatus));
+  function persistStatusLocal() { localStorage.setItem(STATUS_KEY, JSON.stringify(tripStatus)); }
+
+  // ---- Roadmap (destinations) ----
+  function loadDestinations() {
+    try { const raw = localStorage.getItem(DEST_KEY); return raw ? JSON.parse(raw) : []; } catch (e) { return []; }
+  }
+  function saveDestinations() { localStorage.setItem(DEST_KEY, JSON.stringify(destinations)); }
+  function sortedDestinations() {
+    return destinations.slice().sort((a, b) => (a.startDate || '9999-99-99').localeCompare(b.startDate || '9999-99-99'));
   }
 
-  // Which days on the timeline count as "currently in" / "heading to"
-  function isCurrentLocationDay(iso, todayIso) {
-    if (!tripStatus.statusHere) return false;
-    if (tripStatus.statusHereStart && tripStatus.statusHereEnd) {
-      return iso >= tripStatus.statusHereStart && iso <= tripStatus.statusHereEnd;
+  document.getElementById('suggestDestBtn').addEventListener('click', () => {
+    const list = sortedDestinations();
+    let base;
+    if (list.length > 0) {
+      const last = list[list.length - 1];
+      const anchor = last.endDate || last.startDate;
+      if (anchor) { base = addDays(parseISO(anchor), 1); }
     }
-    if (tripStatus.statusHereStart && !tripStatus.statusHereEnd) {
-      return iso === tripStatus.statusHereStart;
+    if (!base) {
+      const hereEnd = document.getElementById('statusHereEnd').value;
+      base = hereEnd ? addDays(parseISO(hereEnd), 1) : addDays(new Date(), 1);
     }
-    if (!tripStatus.statusHereStart) {
-      return iso === todayIso;
-    }
-    return false;
-  }
-  function isHeadingDay(iso) {
-    return !!(tripStatus.statusNext && tripStatus.statusNextDate && iso === tripStatus.statusNextDate);
-  }
+    document.getElementById('destStartInput').value = toISODate(base);
+  });
 
-  // ---- Day selection ----
-  function toggleDaySelected(iso) {
-    if (selectedDays.has(iso)) selectedDays.delete(iso);
-    else selectedDays.add(iso);
+  document.getElementById('addDestBtn').addEventListener('click', () => {
+    const location = document.getElementById('destLocInput').value.trim();
+    const startDate = document.getElementById('destStartInput').value || null;
+    const endDate = document.getElementById('destEndInput').value || null;
+    if (!location) return;
+    const d = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), location, startDate, endDate };
+    destinations.push(d);
+    saveDestinations();
+    syncDestUpsert(d);
+    document.getElementById('destLocInput').value = '';
+    document.getElementById('destStartInput').value = '';
+    document.getElementById('destEndInput').value = '';
+    render();
+  });
+
+  function removeDestination(id) {
+    destinations = destinations.filter(d => d.id !== id);
+    saveDestinations();
+    syncDestDelete(id);
     render();
   }
 
-  // ---- Unscheduled drop target ----
+  function renderRoadmap() {
+    roadmapList.innerHTML = '';
+    const list = sortedDestinations();
+    if (list.length === 0) {
+      roadmapNextPreview.textContent = 'Nothing planned yet';
+      const empty = document.createElement('div');
+      empty.className = 'roadmap-empty';
+      empty.textContent = 'No destinations yet — add your next stop below, or plan several weeks ahead at once.';
+      roadmapList.appendChild(empty);
+      return;
+    }
+    roadmapNextPreview.textContent = list[0].location + (list[0].startDate ? ' (' + formatDateShort(list[0].startDate) + ')' : '');
+    list.forEach((d, i) => {
+      const row = document.createElement('div');
+      row.className = 'roadmap-row';
+      const num = document.createElement('div');
+      num.className = 'rr-num';
+      num.textContent = String(i + 1);
+      const main = document.createElement('div');
+      main.className = 'rr-main';
+      const loc = document.createElement('div');
+      loc.className = 'rr-loc';
+      loc.textContent = d.location;
+      const dates = document.createElement('div');
+      dates.className = 'rr-dates';
+      dates.textContent = d.startDate ? (d.endDate && d.endDate !== d.startDate ? formatDateShort(d.startDate) + ' – ' + formatDateShort(d.endDate) : formatDateShort(d.startDate)) : 'No date set';
+      main.appendChild(loc);
+      main.appendChild(dates);
+      const del = document.createElement('button');
+      del.className = 'rr-del';
+      del.textContent = 'Remove';
+      del.addEventListener('click', () => removeDestination(d.id));
+      row.appendChild(num);
+      row.appendChild(main);
+      row.appendChild(del);
+      roadmapList.appendChild(row);
+    });
+  }
+
+  function isCurrentLocationDay(iso, todayIso) {
+    if (!tripStatus.statusHere) return false;
+    if (tripStatus.statusHereStart && tripStatus.statusHereEnd) return iso >= tripStatus.statusHereStart && iso <= tripStatus.statusHereEnd;
+    if (tripStatus.statusHereStart && !tripStatus.statusHereEnd) return iso === tripStatus.statusHereStart;
+    if (!tripStatus.statusHereStart) return iso === todayIso;
+    return false;
+  }
+  function destinationForDay(iso) {
+    return sortedDestinations().find(d => {
+      if (!d.location) return false;
+      if (d.startDate && d.endDate) return iso >= d.startDate && iso <= d.endDate;
+      if (d.startDate && !d.endDate) return iso === d.startDate;
+      return false;
+    });
+  }
+
+  function toggleDaySelected(iso) { if (selectedDays.has(iso)) selectedDays.delete(iso); else selectedDays.add(iso); render(); }
+
   unscheduledWrap.addEventListener('dragover', e => { e.preventDefault(); unscheduledWrap.classList.add('drag-over'); });
   unscheduledWrap.addEventListener('dragleave', () => unscheduledWrap.classList.remove('drag-over'));
   unscheduledWrap.addEventListener('drop', e => {
     e.preventDefault();
     unscheduledWrap.classList.remove('drag-over');
-    const id = e.dataTransfer.getData('text/plain');
-    const t = tasks.find(x => x.id === id);
-    if (t) { t.date = null; save(); syncTaskUpsert(t); render(); }
+    const payload = parsePayload(e.dataTransfer.getData('text/plain'));
+    if (!payload) return;
+    const t = tasks.find(x => x.id === payload.id);
+    if (t) { t.date = null; t.dateEnd = null; save(); syncTaskUpsert(t); render(); }
   });
 
-  function load() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : [];
-    } catch (e) { return []; }
-  }
-  function save() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  function parsePayload(str) { try { return JSON.parse(str); } catch (e) { return null; } }
+  function load() { try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : []; } catch (e) { return []; } }
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); }
+
+  function startOfWeek(d) { const dt = new Date(d.getFullYear(), d.getMonth(), d.getDate()); dt.setDate(dt.getDate() - dt.getDay()); return dt; }
+  function addDays(d, n) { const dt = new Date(d); dt.setDate(dt.getDate() + n); return dt; }
+  function parseISO(iso) { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d); }
+  function daysBetween(a, b) { return Math.round((parseISO(b) - parseISO(a)) / 86400000); }
+  function toISODate(d) { const y = d.getFullYear(); const m = String(d.getMonth() + 1).padStart(2, '0'); const day = String(d.getDate()).padStart(2, '0'); return `${y}-${m}-${day}`; }
+  function isSameDate(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function formatTime12(t) { if (!t) return ''; const [h, m] = t.split(':').map(Number); const ampm = h >= 12 ? 'PM' : 'AM'; const h12 = h % 12 === 0 ? 12 : h % 12; return `${h12}:${String(m).padStart(2, '0')} ${ampm}`; }
+  function formatDateLong(iso) { const dt = parseISO(iso); return dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }); }
+  function formatDateShort(iso) { const dt = parseISO(iso); return dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }); }
+  function debounce(fn, wait) { let timer; return function(...args) { clearTimeout(timer); timer = setTimeout(() => fn.apply(this, args), wait); }; }
+  function shiftTaskDates(t, delta) {
+    if (t.date) t.date = toISODate(addDays(parseISO(t.date), delta));
+    if (t.dateEnd) t.dateEnd = toISODate(addDays(parseISO(t.dateEnd), delta));
   }
 
-  function startOfWeek(d) {
-    const dt = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    const day = dt.getDay();
-    dt.setDate(dt.getDate() - day);
-    return dt;
-  }
-  function addDays(d, n) {
-    const dt = new Date(d);
-    dt.setDate(dt.getDate() + n);
-    return dt;
-  }
-  function toISODate(d) {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
-  }
-  function isSameDate(a, b) {
-    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-  }
-  function formatTime12(t) {
-    if (!t) return '';
-    const [h, m] = t.split(':').map(Number);
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    const h12 = h % 12 === 0 ? 12 : h % 12;
-    return `${h12}:${String(m).padStart(2, '0')} ${ampm}`;
-  }
-  function formatDateLong(iso) {
-    const [y, m, d] = iso.split('-').map(Number);
-    const dt = new Date(y, m - 1, d);
-    return dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-  }
-  function formatDateShort(iso) {
-    const [y, m, d] = iso.split('-').map(Number);
-    const dt = new Date(y, m - 1, d);
-    return dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-  }
-  function debounce(fn, wait) {
-    let timer;
-    return function(...args) {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn.apply(this, args), wait);
-    };
-  }
-
-  function render() {
-    renderWeek();
-    renderUnscheduled();
-    renderList();
-  }
+  function render() { renderRoadmap(); renderWeek(); renderUnscheduled(); renderList(); }
 
   function renderWeek() {
     weekGrid.innerHTML = '';
     const weekEnd = addDays(weekStart, 6);
     rangeLabel.textContent = `${weekStart.toLocaleDateString(undefined,{month:'short',day:'numeric'})} – ${weekEnd.toLocaleDateString(undefined,{month:'short',day:'numeric', year:'numeric'})}`;
-
     const today = new Date();
     const todayIso = toISODate(today);
+
     for (let i = 0; i < 7; i++) {
       const day = addDays(weekStart, i);
       const iso = toISODate(day);
       const col = document.createElement('div');
       const hereDay = isCurrentLocationDay(iso, todayIso);
-      const headingDay = isHeadingDay(iso);
-      col.className = 'day-col' +
-        (isSameDate(day, today) ? ' today' : '') +
-        (selectedDays.has(iso) ? ' selected' : '') +
-        (hereDay ? ' current-location' : '') +
-        (headingDay ? ' heading-day' : '');
+      const dest = destinationForDay(iso);
+      col.className = 'day-col' + (isSameDate(day, today) ? ' today' : '') + (selectedDays.has(iso) ? ' selected' : '') + (hereDay ? ' current-location' : '') + (dest ? ' heading-day' : '');
       col.dataset.date = iso;
 
       col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
@@ -906,9 +613,17 @@ alter publication supabase_realtime add table trip_status;</pre>
       col.addEventListener('drop', e => {
         e.preventDefault();
         col.classList.remove('drag-over');
-        const id = e.dataTransfer.getData('text/plain');
-        const t = tasks.find(x => x.id === id);
-        if (t) { t.date = iso; save(); syncTaskUpsert(t); render(); }
+        const payload = parsePayload(e.dataTransfer.getData('text/plain'));
+        if (!payload) return;
+        const t = tasks.find(x => x.id === payload.id);
+        if (!t) return;
+        if (payload.sourceIso && t.date) {
+          const delta = daysBetween(payload.sourceIso, iso);
+          shiftTaskDates(t, delta);
+        } else {
+          t.date = iso;
+        }
+        save(); syncTaskUpsert(t); render();
       });
 
       const head = document.createElement('div');
@@ -923,11 +638,11 @@ alter publication supabase_realtime add table trip_status;</pre>
         tag.title = 'Currently in ' + tripStatus.statusHere;
         col.appendChild(tag);
       }
-      if (headingDay) {
+      if (dest) {
         const tag2 = document.createElement('div');
         tag2.className = 'location-tag heading';
-        tag2.textContent = '→ ' + tripStatus.statusNext;
-        tag2.title = 'Heading to ' + tripStatus.statusNext;
+        tag2.textContent = '→ ' + dest.location;
+        tag2.title = 'Destination: ' + dest.location;
         col.appendChild(tag2);
       }
 
@@ -938,7 +653,9 @@ alter publication supabase_realtime add table trip_status;</pre>
       dateEl.addEventListener('click', () => toggleDaySelected(iso));
       col.appendChild(dateEl);
 
-      const dayTasks = tasks.filter(t => t.date === iso).sort((a,b) => (a.time||'99:99').localeCompare(b.time||'99:99'));
+      const dayTasks = tasks.filter(t => t.date && (t.dateEnd ? (iso >= t.date && iso <= t.dateEnd) : iso === t.date))
+        .sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99'));
+
       if (dayTasks.length === 0) {
         const empty = document.createElement('div');
         empty.className = 'day-empty';
@@ -951,35 +668,28 @@ alter publication supabase_realtime add table trip_status;</pre>
           item.style.borderLeftColor = (CATEGORIES[t.category] || CATEGORIES.other).color;
           item.draggable = true;
           item.dataset.id = t.id;
-          item.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', t.id); });
+          item.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', JSON.stringify({ id: t.id, sourceIso: iso })); });
 
           const body = document.createElement('div');
           body.innerHTML = (t.time ? `<span class="t-time">${formatTime12(t.time)}</span>` : '') +
             `<span>${escapeHtml(t.title)}</span>` +
-            (t.loc ? `<span class="t-loc">${escapeHtml(t.loc)}</span>` : '');
+            (t.loc ? `<span class="t-loc">${escapeHtml(t.loc)}</span>` : '') +
+            (t.dateEnd ? `<span class="t-range">${formatDateShort(t.date)} – ${formatDateShort(t.dateEnd)}</span>` : '');
           body.addEventListener('click', () => { t.done = !t.done; save(); syncTaskUpsert(t); render(); });
           item.appendChild(body);
 
           const moveRow = document.createElement('div');
           moveRow.className = 't-move';
           const prevBtn = document.createElement('button');
-          prevBtn.type = 'button';
-          prevBtn.textContent = '◀';
-          prevBtn.title = 'Move to previous day';
-          prevBtn.addEventListener('click', (e) => { e.stopPropagation(); t.date = toISODate(addDays(day, -1)); save(); syncTaskUpsert(t); render(); });
+          prevBtn.type = 'button'; prevBtn.textContent = '◀'; prevBtn.title = 'Shift earlier one day';
+          prevBtn.addEventListener('click', (e) => { e.stopPropagation(); shiftTaskDates(t, -1); save(); syncTaskUpsert(t); render(); });
           const editIcon = document.createElement('button');
-          editIcon.type = 'button';
-          editIcon.textContent = '✎';
-          editIcon.title = 'Edit task';
+          editIcon.type = 'button'; editIcon.textContent = '✎'; editIcon.title = 'Edit task';
           editIcon.addEventListener('click', (e) => { e.stopPropagation(); startEdit(t); });
           const nextBtn = document.createElement('button');
-          nextBtn.type = 'button';
-          nextBtn.textContent = '▶';
-          nextBtn.title = 'Move to next day';
-          nextBtn.addEventListener('click', (e) => { e.stopPropagation(); t.date = toISODate(addDays(day, 1)); save(); syncTaskUpsert(t); render(); });
-          moveRow.appendChild(prevBtn);
-          moveRow.appendChild(editIcon);
-          moveRow.appendChild(nextBtn);
+          nextBtn.type = 'button'; nextBtn.textContent = '▶'; nextBtn.title = 'Shift later one day';
+          nextBtn.addEventListener('click', (e) => { e.stopPropagation(); shiftTaskDates(t, 1); save(); syncTaskUpsert(t); render(); });
+          moveRow.appendChild(prevBtn); moveRow.appendChild(editIcon); moveRow.appendChild(nextBtn);
           item.appendChild(moveRow);
 
           col.appendChild(item);
@@ -992,9 +702,7 @@ alter publication supabase_realtime add table trip_status;</pre>
   function renderUnscheduled() {
     unscheduledItems.innerHTML = '';
     const todayIso = toISODate(new Date());
-    const items = tasks.filter(t => !t.date && !t.done)
-      .sort((a,b) => (a.deadline || '9999-99-99').localeCompare(b.deadline || '9999-99-99'));
-
+    const items = tasks.filter(t => !t.date && !t.done).sort((a, b) => (a.deadline || '9999-99-99').localeCompare(b.deadline || '9999-99-99'));
     if (items.length === 0) {
       const empty = document.createElement('div');
       empty.className = 'unscheduled-empty';
@@ -1002,7 +710,6 @@ alter publication supabase_realtime add table trip_status;</pre>
       unscheduledItems.appendChild(empty);
       return;
     }
-
     items.forEach(t => {
       const overdue = t.deadline && t.deadline < todayIso;
       const chip = document.createElement('div');
@@ -1010,11 +717,10 @@ alter publication supabase_realtime add table trip_status;</pre>
       chip.style.borderLeftColor = (CATEGORIES[t.category] || CATEGORIES.other).color;
       chip.draggable = true;
       chip.dataset.id = t.id;
-      chip.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', t.id); });
+      chip.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', JSON.stringify({ id: t.id })); });
       chip.addEventListener('click', () => startEdit(t));
       chip.title = 'Click to edit, or drag onto a day';
-      chip.innerHTML = `<span>${escapeHtml(t.title)}</span>` +
-        (t.deadline ? `<span class="u-deadline">Due ${formatDateShort(t.deadline)}${overdue ? ' (overdue)' : ''}</span>` : '<span class="u-deadline">No deadline</span>');
+      chip.innerHTML = `<span>${escapeHtml(t.title)}</span>` + (t.deadline ? `<span class="u-deadline">Due ${formatDateShort(t.deadline)}${overdue ? ' (overdue)' : ''}</span>` : '<span class="u-deadline">No deadline</span>');
       unscheduledItems.appendChild(chip);
     });
   }
@@ -1024,52 +730,40 @@ alter publication supabase_realtime add table trip_status;</pre>
     const filter = filterSelect.value;
     const cat = categoryFilter.value;
     let visible = tasks.slice();
-
     function applyCategoryFilter(list) {
       if (cat === 'none') return list.filter(t => !t.category);
       if (cat !== 'all') return list.filter(t => t.category === cat);
       return list;
     }
-
     if (selectedDays.size > 0) {
       dayFilterBar.style.display = 'flex';
       dayFilterBar.innerHTML = '';
       const label = document.createElement('span');
       label.textContent = `${selectedDays.size} day${selectedDays.size > 1 ? 's' : ''} selected`;
       const clearBtn = document.createElement('button');
-      clearBtn.type = 'button';
-      clearBtn.textContent = 'Clear selection';
+      clearBtn.type = 'button'; clearBtn.textContent = 'Clear selection';
       clearBtn.addEventListener('click', () => { selectedDays.clear(); render(); });
-      dayFilterBar.appendChild(label);
-      dayFilterBar.appendChild(clearBtn);
-
-      visible = visible.filter(t => t.date && selectedDays.has(t.date));
+      dayFilterBar.appendChild(label); dayFilterBar.appendChild(clearBtn);
+      visible = visible.filter(t => t.date && [...selectedDays].some(iso => t.dateEnd ? (iso >= t.date && iso <= t.dateEnd) : iso === t.date));
       visible = applyCategoryFilter(visible);
       if (filter === 'done') visible = visible.filter(t => t.done);
     } else {
       dayFilterBar.style.display = 'none';
       dayFilterBar.innerHTML = '';
-
       if (filter === 'upcoming') {
         const today = toISODate(new Date());
         const cutoff = toISODate(addDays(new Date(), 14));
-        visible = visible.filter(t => !t.done && (
-          (t.date && t.date >= today && t.date <= cutoff) ||
-          (!t.date && t.deadline && t.deadline <= cutoff) ||
-          (!t.date && !t.deadline)
-        ));
+        visible = visible.filter(t => !t.done && ((t.date && t.date <= cutoff && (t.dateEnd || t.date) >= today) || (!t.date && t.deadline && t.deadline <= cutoff) || (!t.date && !t.deadline)));
       } else if (filter === 'done') {
         visible = visible.filter(t => t.done);
       }
       visible = applyCategoryFilter(visible);
     }
-
-    visible.sort((a,b) => {
-      const ka = a.date ? a.date + (a.time||'99:99') : ('z' + (a.deadline||'9999-99-99'));
-      const kb = b.date ? b.date + (b.time||'99:99') : ('z' + (b.deadline||'9999-99-99'));
+    visible.sort((a, b) => {
+      const ka = a.date ? a.date + (a.time || '99:99') : ('z' + (a.deadline || '9999-99-99'));
+      const kb = b.date ? b.date + (b.time || '99:99') : ('z' + (b.deadline || '9999-99-99'));
       return ka.localeCompare(kb);
     });
-
     if (visible.length === 0) {
       const empty = document.createElement('div');
       empty.className = 'empty-state';
@@ -1077,41 +771,33 @@ alter publication supabase_realtime add table trip_status;</pre>
       taskList.appendChild(empty);
       return;
     }
-
     const todayIso = toISODate(new Date());
-
     visible.forEach(t => {
       const row = document.createElement('div');
       row.className = 'task-row' + (t.done ? ' done' : '');
       row.style.borderLeftColor = (CATEGORIES[t.category] || CATEGORIES.other).color;
-
       const cb = document.createElement('input');
-      cb.type = 'checkbox';
-      cb.checked = t.done;
+      cb.type = 'checkbox'; cb.checked = t.done;
       cb.addEventListener('change', () => { t.done = cb.checked; save(); syncTaskUpsert(t); render(); });
-
       const mainDiv = document.createElement('div');
       mainDiv.className = 'task-main';
-
       const titleRow = document.createElement('div');
       titleRow.className = 't-title-row';
       const titleDiv = document.createElement('div');
-      titleDiv.className = 't-title';
-      titleDiv.textContent = t.title;
+      titleDiv.className = 't-title'; titleDiv.textContent = t.title;
       titleRow.appendChild(titleDiv);
       if (t.category && CATEGORIES[t.category]) {
         const badge = document.createElement('span');
         badge.className = 'cat-badge';
         const catInfo = CATEGORIES[t.category];
-        badge.textContent = catInfo.label;
-        badge.style.background = catInfo.color;
+        badge.textContent = catInfo.label; badge.style.background = catInfo.color;
         titleRow.appendChild(badge);
       }
-
       const metaDiv = document.createElement('div');
       metaDiv.className = 't-meta';
       const metaParts = [];
-      metaParts.push(t.date ? formatDateLong(t.date) : 'Unscheduled');
+      if (t.date) metaParts.push(t.dateEnd && t.dateEnd !== t.date ? formatDateLong(t.date) + ' – ' + formatDateLong(t.dateEnd) : formatDateLong(t.date));
+      else metaParts.push('Unscheduled');
       if (t.time) metaParts.push(formatTime12(t.time));
       if (t.loc) metaParts.push(t.loc);
       metaDiv.innerHTML = metaParts.map(p => `<span>${escapeHtml(p)}</span>`).join('');
@@ -1122,39 +808,24 @@ alter publication supabase_realtime add table trip_status;</pre>
         dl.textContent = `Due ${formatDateShort(t.deadline)}${overdue ? ' (overdue)' : ''}`;
         metaDiv.appendChild(dl);
       }
-
-      mainDiv.appendChild(titleRow);
-      mainDiv.appendChild(metaDiv);
-
+      mainDiv.appendChild(titleRow); mainDiv.appendChild(metaDiv);
       const editBtn = document.createElement('button');
-      editBtn.className = 'edit-btn';
-      editBtn.textContent = 'Edit';
+      editBtn.className = 'edit-btn'; editBtn.textContent = 'Edit';
       editBtn.addEventListener('click', () => startEdit(t));
-
       const delBtn = document.createElement('button');
-      delBtn.className = 'del-btn';
-      delBtn.textContent = 'Delete';
+      delBtn.className = 'del-btn'; delBtn.textContent = 'Delete';
       delBtn.addEventListener('click', () => {
         tasks = tasks.filter(x => x.id !== t.id);
-        save();
-        syncTaskDelete(t.id);
+        save(); syncTaskDelete(t.id);
         if (editingTaskId === t.id) cancelEdit();
         render();
       });
-
-      row.appendChild(cb);
-      row.appendChild(mainDiv);
-      row.appendChild(editBtn);
-      row.appendChild(delBtn);
+      row.appendChild(cb); row.appendChild(mainDiv); row.appendChild(editBtn); row.appendChild(delBtn);
       taskList.appendChild(row);
     });
   }
 
-  function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
+  function escapeHtml(str) { const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
 
   // ================= Supabase sync =================
   const syncStatusLabel = document.getElementById('syncStatusLabel');
@@ -1163,9 +834,7 @@ alter publication supabase_realtime add table trip_status;</pre>
   const syncConnectedText = document.getElementById('syncConnectedText');
   const setupSql = document.getElementById('setupSql');
 
-  document.getElementById('showSqlBtn').addEventListener('click', () => {
-    setupSql.style.display = setupSql.style.display === 'none' ? 'block' : 'none';
-  });
+  document.getElementById('showSqlBtn').addEventListener('click', () => { setupSql.style.display = setupSql.style.display === 'none' ? 'block' : 'none'; });
   document.getElementById('connectSupaBtn').addEventListener('click', () => {
     const url = document.getElementById('supaUrlInput').value.trim();
     const key = document.getElementById('supaKeyInput').value.trim();
@@ -1176,68 +845,28 @@ alter publication supabase_realtime add table trip_status;</pre>
 
   function setSyncStatus(text) { syncStatusLabel.textContent = text; }
 
-  function rowToTask(r) {
-    return { id: r.id, title: r.title, category: r.category || '', date: r.date, time: r.time || '', loc: r.loc || '', deadline: r.deadline, done: !!r.done };
-  }
-  function taskToRow(t) {
-    return { id: t.id, title: t.title, category: t.category || '', date: t.date || null, time: t.time || null, loc: t.loc || null, deadline: t.deadline || null, done: t.done, updated_at: new Date().toISOString() };
-  }
-  function rowToStatus(r) {
-    return {
-      statusHere: r.currently_in || '', statusHereStart: r.currently_in_start || '', statusHereEnd: r.currently_in_end || '',
-      statusNext: r.heading_to || '', statusNextDate: r.heading_to_date || ''
-    };
-  }
-  function statusToRow(s) {
-    return {
-      currently_in: s.statusHere || null, currently_in_start: s.statusHereStart || null, currently_in_end: s.statusHereEnd || null,
-      heading_to: s.statusNext || null, heading_to_date: s.statusNextDate || null,
-      updated_at: new Date().toISOString()
-    };
-  }
+  function rowToTask(r) { return { id: r.id, title: r.title, category: r.category || '', date: r.date, dateEnd: r.date_end || null, time: r.time || '', loc: r.loc || '', deadline: r.deadline, done: !!r.done }; }
+  function taskToRow(t) { return { id: t.id, title: t.title, category: t.category || '', date: t.date || null, date_end: t.dateEnd || null, time: t.time || null, loc: t.loc || null, deadline: t.deadline || null, done: t.done, updated_at: new Date().toISOString() }; }
+  function rowToStatus(r) { return { statusHere: r.currently_in || '', statusHereStart: r.currently_in_start || '', statusHereEnd: r.currently_in_end || '' }; }
+  function statusToRow(s) { return { currently_in: s.statusHere || null, currently_in_start: s.statusHereStart || null, currently_in_end: s.statusHereEnd || null, updated_at: new Date().toISOString() }; }
+  function rowToDest(r) { return { id: r.id, location: r.location, startDate: r.start_date, endDate: r.end_date }; }
+  function destToRow(d) { return { id: d.id, location: d.location, start_date: d.startDate || null, end_date: d.endDate || null, updated_at: new Date().toISOString() }; }
 
-  async function syncTaskUpsert(t) {
-    if (!supaClient) return;
-    const { error } = await supaClient.from('todo_tasks').upsert([taskToRow(t)]);
-    if (error) console.error('Supabase task sync error:', error);
-  }
-  async function syncTaskDelete(id) {
-    if (!supaClient) return;
-    const { error } = await supaClient.from('todo_tasks').delete().eq('id', id);
-    if (error) console.error('Supabase task delete error:', error);
-  }
-  async function syncStatusUpsert() {
-    if (!supaClient) return;
-    const { error } = await supaClient.from('trip_status').upsert([{ id: 'main', ...statusToRow(tripStatus) }]);
-    if (error) console.error('Supabase status sync error:', error);
-  }
+  async function syncTaskUpsert(t) { if (!supaClient) return; const { error } = await supaClient.from('todo_tasks').upsert([taskToRow(t)]); if (error) console.error(error); }
+  async function syncTaskDelete(id) { if (!supaClient) return; const { error } = await supaClient.from('todo_tasks').delete().eq('id', id); if (error) console.error(error); }
+  async function syncStatusUpsert() { if (!supaClient) return; const { error } = await supaClient.from('trip_status').upsert([{ id: 'main', ...statusToRow(tripStatus) }]); if (error) console.error(error); }
+  async function syncDestUpsert(d) { if (!supaClient) return; const { error } = await supaClient.from('destinations').upsert([destToRow(d)]); if (error) console.error(error); }
+  async function syncDestDelete(id) { if (!supaClient) return; const { error } = await supaClient.from('destinations').delete().eq('id', id); if (error) console.error(error); }
   const debouncedStatusSync = debounce(syncStatusUpsert, 800);
 
-  async function refetchTasks() {
-    if (!supaClient) return;
-    const { data, error } = await supaClient.from('todo_tasks').select('*');
-    if (error) { console.error(error); return; }
-    if (data) { tasks = data.map(rowToTask); save(); render(); }
-  }
-  async function refetchStatus() {
-    if (!supaClient) return;
-    const { data, error } = await supaClient.from('trip_status').select('*').eq('id', 'main').limit(1);
-    if (error) { console.error(error); return; }
-    if (data && data[0]) {
-      Object.assign(tripStatus, rowToStatus(data[0]));
-      persistStatusLocal();
-      fillStatusInputs();
-      renderWeek();
-    }
-  }
+  async function refetchTasks() { if (!supaClient) return; const { data, error } = await supaClient.from('todo_tasks').select('*'); if (error) { console.error(error); return; } if (data) { tasks = data.map(rowToTask); save(); render(); } }
+  async function refetchStatus() { if (!supaClient) return; const { data, error } = await supaClient.from('trip_status').select('*').eq('id', 'main').limit(1); if (error) { console.error(error); return; } if (data && data[0]) { Object.assign(tripStatus, rowToStatus(data[0])); persistStatusLocal(); fillStatusInputs(); renderWeek(); } }
+  async function refetchDest() { if (!supaClient) return; const { data, error } = await supaClient.from('destinations').select('*'); if (error) { console.error(error); return; } if (data) { destinations = data.map(rowToDest); saveDestinations(); render(); } }
 
   function subscribeRealtime() {
-    supaChannelTasks = supaClient.channel('todo_tasks_sync')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'todo_tasks' }, refetchTasks)
-      .subscribe();
-    supaChannelStatus = supaClient.channel('trip_status_sync')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'trip_status' }, refetchStatus)
-      .subscribe();
+    supaChannelTasks = supaClient.channel('todo_tasks_sync').on('postgres_changes', { event: '*', schema: 'public', table: 'todo_tasks' }, refetchTasks).subscribe();
+    supaChannelStatus = supaClient.channel('trip_status_sync').on('postgres_changes', { event: '*', schema: 'public', table: 'trip_status' }, refetchStatus).subscribe();
+    supaChannelDest = supaClient.channel('destinations_sync').on('postgres_changes', { event: '*', schema: 'public', table: 'destinations' }, refetchDest).subscribe();
   }
 
   async function connectSupabase(url, key, opts) {
@@ -1253,31 +882,24 @@ alter publication supabase_realtime add table trip_status;</pre>
 
       const { data: remoteTasks, error: tasksErr } = await supaClient.from('todo_tasks').select('*');
       if (tasksErr) throw tasksErr;
-
-      if (remoteTasks && remoteTasks.length > 0) {
-        tasks = remoteTasks.map(rowToTask);
-        save();
-      } else if (tasks.length > 0) {
-        await supaClient.from('todo_tasks').upsert(tasks.map(taskToRow));
-      }
+      if (remoteTasks && remoteTasks.length > 0) { tasks = remoteTasks.map(rowToTask); save(); }
+      else if (tasks.length > 0) { await supaClient.from('todo_tasks').upsert(tasks.map(taskToRow)); }
 
       const { data: remoteStatusRows, error: statusErr } = await supaClient.from('trip_status').select('*').eq('id', 'main').limit(1);
       if (statusErr) throw statusErr;
+      if (remoteStatusRows && remoteStatusRows.length > 0) { Object.assign(tripStatus, rowToStatus(remoteStatusRows[0])); persistStatusLocal(); fillStatusInputs(); }
+      else { await supaClient.from('trip_status').upsert([{ id: 'main', ...statusToRow(tripStatus) }]); }
 
-      if (remoteStatusRows && remoteStatusRows.length > 0) {
-        Object.assign(tripStatus, rowToStatus(remoteStatusRows[0]));
-        persistStatusLocal();
-        fillStatusInputs();
-      } else {
-        await supaClient.from('trip_status').upsert([{ id: 'main', ...statusToRow(tripStatus) }]);
-      }
+      const { data: remoteDest, error: destErr } = await supaClient.from('destinations').select('*');
+      if (destErr) throw destErr;
+      if (remoteDest && remoteDest.length > 0) { destinations = remoteDest.map(rowToDest); saveDestinations(); }
+      else if (destinations.length > 0) { await supaClient.from('destinations').upsert(destinations.map(destToRow)); }
 
       subscribeRealtime();
       setSyncStatus('Connected');
       syncConnectForm.style.display = 'none';
       syncConnectedInfo.style.display = 'block';
-      let host = url;
-      try { host = new URL(url).host; } catch (e) {}
+      let host = url; try { host = new URL(url).host; } catch (e) {}
       syncConnectedText.textContent = 'Connected to ' + host + '. Changes sync automatically across any device that loads this app.';
       render();
     } catch (err) {
@@ -1292,6 +914,7 @@ alter publication supabase_realtime add table trip_status;</pre>
     if (supaClient) {
       if (supaChannelTasks) supaClient.removeChannel(supaChannelTasks);
       if (supaChannelStatus) supaClient.removeChannel(supaChannelStatus);
+      if (supaChannelDest) supaClient.removeChannel(supaChannelDest);
     }
     supaClient = null;
     localStorage.setItem(SUPA_DISABLED_KEY, '1');
