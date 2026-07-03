@@ -220,6 +220,24 @@
   .day-col.today { background: var(--today); border-color: #dfcf9f; }
   .day-col.selected { background: var(--selected); border-color: #a9c4de; }
   .day-col.drag-over { outline: 2px dashed var(--accent); outline-offset: -2px; }
+  .day-col.current-location { border-top: 3px solid var(--accent); }
+  .day-col.heading-day { border-top: 3px solid var(--cat-travel); }
+  .day-col.current-location.heading-day { border-top: 3px solid var(--accent); border-bottom: 3px solid var(--cat-travel); }
+  .location-tag {
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 6px;
+    align-self: flex-start;
+    line-height: 1.4;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .location-tag.heading { background: var(--cat-travel); }
   .day-head {
     font-size: 12px;
     color: var(--muted);
@@ -729,6 +747,7 @@ alter publication supabase_realtime add table trip_status;</pre>
       tripStatus[id] = el.value;
       persistStatusLocal();
       debouncedStatusSync();
+      renderWeek();
     });
   });
 
@@ -747,6 +766,7 @@ alter publication supabase_realtime add table trip_status;</pre>
     tripStatus.statusNextDate = iso;
     persistStatusLocal();
     debouncedStatusSync();
+    renderWeek();
   });
 
   function fillStatusInputs() {
@@ -762,6 +782,24 @@ alter publication supabase_realtime add table trip_status;</pre>
   }
   function persistStatusLocal() {
     localStorage.setItem(STATUS_KEY, JSON.stringify(tripStatus));
+  }
+
+  // Which days on the timeline count as "currently in" / "heading to"
+  function isCurrentLocationDay(iso, todayIso) {
+    if (!tripStatus.statusHere) return false;
+    if (tripStatus.statusHereStart && tripStatus.statusHereEnd) {
+      return iso >= tripStatus.statusHereStart && iso <= tripStatus.statusHereEnd;
+    }
+    if (tripStatus.statusHereStart && !tripStatus.statusHereEnd) {
+      return iso === tripStatus.statusHereStart;
+    }
+    if (!tripStatus.statusHereStart) {
+      return iso === todayIso;
+    }
+    return false;
+  }
+  function isHeadingDay(iso) {
+    return !!(tripStatus.statusNext && tripStatus.statusNextDate && iso === tripStatus.statusNextDate);
   }
 
   // ---- Day selection ----
@@ -849,11 +887,18 @@ alter publication supabase_realtime add table trip_status;</pre>
     rangeLabel.textContent = `${weekStart.toLocaleDateString(undefined,{month:'short',day:'numeric'})} – ${weekEnd.toLocaleDateString(undefined,{month:'short',day:'numeric', year:'numeric'})}`;
 
     const today = new Date();
+    const todayIso = toISODate(today);
     for (let i = 0; i < 7; i++) {
       const day = addDays(weekStart, i);
       const iso = toISODate(day);
       const col = document.createElement('div');
-      col.className = 'day-col' + (isSameDate(day, today) ? ' today' : '') + (selectedDays.has(iso) ? ' selected' : '');
+      const hereDay = isCurrentLocationDay(iso, todayIso);
+      const headingDay = isHeadingDay(iso);
+      col.className = 'day-col' +
+        (isSameDate(day, today) ? ' today' : '') +
+        (selectedDays.has(iso) ? ' selected' : '') +
+        (hereDay ? ' current-location' : '') +
+        (headingDay ? ' heading-day' : '');
       col.dataset.date = iso;
 
       col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
@@ -870,6 +915,21 @@ alter publication supabase_realtime add table trip_status;</pre>
       head.className = 'day-head';
       head.textContent = day.toLocaleDateString(undefined, { weekday: 'long' });
       col.appendChild(head);
+
+      if (hereDay) {
+        const tag = document.createElement('div');
+        tag.className = 'location-tag';
+        tag.textContent = tripStatus.statusHere;
+        tag.title = 'Currently in ' + tripStatus.statusHere;
+        col.appendChild(tag);
+      }
+      if (headingDay) {
+        const tag2 = document.createElement('div');
+        tag2.className = 'location-tag heading';
+        tag2.textContent = '→ ' + tripStatus.statusNext;
+        tag2.title = 'Heading to ' + tripStatus.statusNext;
+        col.appendChild(tag2);
+      }
 
       const dateEl = document.createElement('div');
       dateEl.className = 'day-date' + (selectedDays.has(iso) ? ' selected' : '');
@@ -1167,6 +1227,7 @@ alter publication supabase_realtime add table trip_status;</pre>
       Object.assign(tripStatus, rowToStatus(data[0]));
       persistStatusLocal();
       fillStatusInputs();
+      renderWeek();
     }
   }
 
