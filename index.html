@@ -9,7 +9,6 @@
     --bg: #f6f5f2; --card: #ffffff; --border: #e4e1da; --text: #2b2a27; --muted: #8a8579;
     --accent: #4a6b5a; --accent-light: #e7efe9; --danger: #b5564a; --danger-light: #f7e9e7;
     --today: #f0e6d2; --selected: #dce8f4;
-    --cat-work: #4d6f96; --cat-travel: #a87a3a; --cat-camp: #4a6b5a; --cat-personal: #8a5b8f; --cat-other: #8a8579;
   }
   * { box-sizing: border-box; }
   body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); }
@@ -22,13 +21,13 @@
   main { padding: 8px 24px 32px; max-width: 1100px; margin: 0 auto; }
 
   .trip-status { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
-  .status-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+  .status-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   .status-card.wide { grid-column: 1 / -1; }
   .status-card label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
   .status-card > input { border: none; outline: none; font-size: 14.5px; font-family: inherit; color: var(--text); padding: 2px 0; background: transparent; }
   .status-card input::placeholder { color: #c9c5ba; }
-  .status-subrow { display: flex; gap: 10px; align-items: end; margin-top: 4px; }
-  .status-subfield { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+  .status-subrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-top: 4px; }
+  .status-subfield { display: flex; flex-direction: column; gap: 2px; flex: 1 1 100px; min-width: 100px; }
   .status-subfield label { font-size: 10px; }
   .status-subfield input { border: 1px solid var(--border); border-radius: 6px; padding: 5px 6px; font-size: 12.5px; font-family: inherit; width: 100%; }
   .suggest-btn { border: 1px solid var(--border); background: var(--accent-light); border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer; color: var(--text); white-space: nowrap; height: 30px; }
@@ -43,16 +42,16 @@
   .roadmap-row .rr-del { border: none; background: transparent; color: var(--danger); cursor: pointer; font-size: 12px; padding: 3px 8px; border-radius: 6px; flex-shrink: 0; }
   .roadmap-row .rr-del:hover { background: var(--danger-light); }
   .roadmap-empty { font-size: 13px; color: var(--muted); margin: 4px 0 10px; }
-  .roadmap-add { display: grid; grid-template-columns: 1.6fr 1fr 1fr auto auto; gap: 8px; align-items: end; }
-  .roadmap-add .field { display: flex; flex-direction: column; gap: 2px; }
+  .roadmap-add { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
+  .roadmap-add .field { flex: 1 1 140px; min-width: 120px; display: flex; flex-direction: column; gap: 2px; }
   .roadmap-add .field label { font-size: 10px; color: var(--muted); text-transform: uppercase; }
-  .roadmap-add input { border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 12.5px; font-family: inherit; }
-  .roadmap-add button { border: 1px solid var(--border); background: var(--accent); color: #fff; border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer; height: 32px; white-space: nowrap; }
+  .roadmap-add input { border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 12.5px; font-family: inherit; width: 100%; }
+  .roadmap-add button { border: 1px solid var(--border); background: var(--accent); color: #fff; border-radius: 6px; padding: 6px 10px; font-size: 12px; cursor: pointer; height: 32px; white-space: nowrap; flex: 0 0 auto; }
   .roadmap-add button.secondary { background: var(--card); color: var(--text); }
 
-  .sync-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px; padding: 4px 14px; }
-  .sync-panel summary { cursor: pointer; font-size: 13.5px; font-weight: 600; padding: 10px 0; list-style: none; }
-  .sync-panel summary::-webkit-details-marker { display: none; }
+  .sync-panel, .categories-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px; padding: 4px 14px; }
+  .sync-panel summary, .categories-panel summary { cursor: pointer; font-size: 13.5px; font-weight: 600; padding: 10px 0; list-style: none; }
+  .sync-panel summary::-webkit-details-marker, .categories-panel summary::-webkit-details-marker { display: none; }
   .sync-panel summary::before { content: "⚙ "; }
   #syncStatusLabel { font-weight: 400; color: var(--muted); }
   .sync-body { padding: 4px 0 14px; }
@@ -65,22 +64,36 @@
   .sync-note { font-size: 12px; color: var(--muted); margin: 6px 0 0; max-width: 500px; }
   .sync-panel pre { background: #f0efe9; border-radius: 8px; padding: 12px; font-size: 11.5px; overflow-x: auto; white-space: pre-wrap; margin-top: 10px; }
 
-  .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 10px; }
-  .day-col { background: var(--card); border: 1px solid var(--border); border-radius: 12px; min-height: 170px; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .cat-manage-body { padding: 4px 0 14px; display: flex; flex-direction: column; gap: 8px; }
+  .cat-manage-row { display: flex; align-items: center; gap: 10px; background: var(--accent-light); border-radius: 8px; padding: 6px 10px; }
+  .cat-manage-row input[type=color] { width: 32px; height: 32px; border: none; padding: 0; border-radius: 6px; cursor: pointer; background: none; flex-shrink: 0; }
+  .cat-manage-row input[type=text] { flex: 1; min-width: 0; border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 13px; font-family: inherit; background: #fff; }
+  .cat-manage-row .cm-del { border: none; background: transparent; color: var(--danger); cursor: pointer; font-size: 12px; padding: 4px 8px; border-radius: 6px; flex-shrink: 0; }
+  .cat-manage-row .cm-del:hover { background: var(--danger-light); }
+  .cat-manage-add { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 4px; }
+  .cat-manage-add input[type=text] { flex: 1 1 140px; min-width: 120px; border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 13px; font-family: inherit; }
+  .cat-manage-add input[type=color] { width: 32px; height: 32px; border: none; padding: 0; border-radius: 6px; cursor: pointer; flex: 0 0 auto; }
+  .cat-manage-add button { border: 1px solid var(--border); background: var(--accent); color: #fff; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; white-space: nowrap; flex: 0 0 auto; }
+  .cat-manage-empty { font-size: 13px; color: var(--muted); }
+
+  .week-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin-bottom: 10px; }
+  .day-col { background: var(--card); border: 1px solid var(--border); border-radius: 12px; min-height: 170px; min-width: 0; padding: 10px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
   .day-col.today { background: var(--today); border-color: #dfcf9f; }
   .day-col.selected { background: var(--selected); border-color: #a9c4de; }
   .day-col.drag-over { outline: 2px dashed var(--accent); outline-offset: -2px; }
   .day-col.current-location { border-top: 3px solid var(--accent); }
-  .day-col.heading-day { border-top: 3px solid var(--cat-travel); }
-  .day-col.current-location.heading-day { border-top: 3px solid var(--accent); border-bottom: 3px solid var(--cat-travel); }
+  .day-col.heading-day { border-top: 3px solid #a87a3a; }
+  .day-col.current-location.heading-day { border-top: 3px solid var(--accent); border-bottom: 3px solid #a87a3a; }
   .location-tag { font-size: 10px; font-weight: 600; background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 6px; align-self: flex-start; line-height: 1.4; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .location-tag.heading { background: var(--cat-travel); }
+  .location-tag.heading { background: #a87a3a; }
   .day-head { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
-  .day-date { font-size: 18px; font-weight: 600; margin-bottom: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; }
+  .day-date { font-size: 18px; font-weight: 600; margin-bottom: 4px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; }
   .day-date:hover { background: rgba(0,0,0,0.06); }
   .day-date.selected { background: var(--accent); color: #fff; }
-  .day-task { background: var(--accent-light); border-radius: 8px; padding: 6px 8px; font-size: 12.5px; cursor: grab; line-height: 1.35; border-left: 3px solid var(--cat-other); position: relative; }
+  .day-task { background: var(--accent-light); border-radius: 8px; padding: 6px 8px; font-size: 12.5px; cursor: grab; line-height: 1.35; border-left: 3px solid var(--muted); position: relative; overflow-wrap: break-word; word-break: break-word; min-width: 0; }
   .day-task.done { opacity: 0.45; text-decoration: line-through; }
+  .day-task.due-highlight { background: var(--danger-light); border-left-color: var(--danger); }
+  .day-task .t-due-label { color: var(--danger); font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.03em; display: block; }
   .day-task .t-time { font-weight: 600; color: var(--accent); display: block; }
   .day-task .t-loc { color: var(--muted); display: block; }
   .day-task .t-range { color: var(--muted); font-size: 10.5px; display: block; }
@@ -94,35 +107,37 @@
   .unscheduled-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 20px; }
   .unscheduled-wrap.drag-over { outline: 2px dashed var(--accent); outline-offset: -2px; }
   .unscheduled-items { display: flex; flex-wrap: wrap; gap: 8px; }
-  .unscheduled-chip { background: var(--accent-light); border-left: 3px solid var(--cat-other); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; cursor: grab; }
+  .unscheduled-chip { background: var(--accent-light); border-left: 3px solid var(--muted); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; cursor: grab; max-width: 100%; overflow-wrap: break-word; }
   .unscheduled-chip .u-deadline { display: block; font-size: 11px; color: var(--muted); }
   .unscheduled-chip.overdue .u-deadline { color: var(--danger); font-weight: 600; }
   .unscheduled-empty { font-size: 13px; color: var(--muted); }
 
-  .add-form { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: grid; grid-template-columns: 1.4fr 0.9fr 1fr 1fr 0.8fr 1fr 1fr auto auto; gap: 10px; margin-bottom: 20px; align-items: end; }
+  .add-form { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; align-items: end; }
+  .add-form .field { flex: 1 1 140px; min-width: 130px; }
   .field { display: flex; flex-direction: column; gap: 4px; }
   .field label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
-  .field input, .field select { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 14px; font-family: inherit; background: #fff; }
+  .field input, .field select { border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 14px; font-family: inherit; background: #fff; width: 100%; }
+  .add-form button[type=submit], .add-form button#cancelEditBtn { flex: 0 0 auto; }
   .add-form button[type=submit] { background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px 16px; font-size: 14px; cursor: pointer; height: 38px; }
   .add-form button[type=submit]:hover { opacity: 0.9; }
   .add-form button#cancelEditBtn { background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; font-size: 14px; cursor: pointer; height: 38px; }
 
   .list-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
-  .list-controls .filters { display: flex; gap: 8px; }
+  .list-controls .filters { display: flex; flex-wrap: wrap; gap: 8px; }
   .list-controls select { border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px; font-size: 13px; background: var(--card); }
 
   .day-filter-bar { display: none; align-items: center; gap: 10px; background: var(--selected); border-radius: 8px; padding: 8px 12px; font-size: 13px; margin-bottom: 10px; }
   .day-filter-bar button { border: none; background: #fff; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; }
 
   .task-list { display: flex; flex-direction: column; gap: 8px; }
-  .task-row { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--cat-other); border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; }
+  .task-row { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--muted); border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; gap: 12px; }
   .task-row.done { opacity: 0.5; }
   .task-row.done .t-title { text-decoration: line-through; }
   .task-row input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
   .task-main { flex: 1; min-width: 0; }
-  .t-title-row { display: flex; align-items: center; gap: 8px; }
-  .t-title { font-size: 14.5px; font-weight: 500; }
-  .cat-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 0.03em; padding: 2px 7px; border-radius: 20px; color: #fff; flex-shrink: 0; }
+  .t-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .t-title { font-size: 14.5px; font-weight: 500; overflow-wrap: break-word; }
+  .cat-badge { font-size: 10px; text-transform: uppercase; letter-spacing: 0.03em; padding: 2px 7px; border-radius: 20px; color: #fff; flex-shrink: 0; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .t-meta { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
   .t-meta span:not(:last-child)::after { content: " · "; }
   .t-meta .overdue { color: var(--danger); font-weight: 600; }
@@ -137,8 +152,6 @@
   @media (max-width: 800px) {
     .trip-status { grid-template-columns: 1fr; }
     .week-grid { grid-template-columns: repeat(7, minmax(90px,1fr)); overflow-x: auto; }
-    .add-form { grid-template-columns: 1fr 1fr; }
-    .roadmap-add { grid-template-columns: 1fr 1fr; }
   }
 </style>
 </head>
@@ -197,6 +210,18 @@
     </div>
   </section>
 
+  <details class="categories-panel" id="categoriesPanel">
+    <summary>Categories</summary>
+    <div class="cat-manage-body">
+      <div id="categoriesManageList"></div>
+      <div class="cat-manage-add">
+        <input type="text" id="newCatLabel" placeholder="New category name">
+        <input type="color" id="newCatColor" value="#4a6b5a">
+        <button type="button" id="addCatBtn">Add category</button>
+      </div>
+    </div>
+  </details>
+
   <details class="sync-panel" id="syncPanel">
     <summary>Sync — <span id="syncStatusLabel">Not connected</span></summary>
     <div class="sync-body">
@@ -211,8 +236,8 @@
         </div>
         <button type="button" id="connectSupaBtn">Connect</button>
         <button type="button" id="showSqlBtn" class="secondary">Show setup SQL</button>
-        <p class="sync-note">Auto-connects using the key baked into this file. Open access policy on your tables — fine for personal use, just don't share the URL/key.</p>
-        <pre id="setupSql" style="display:none;">-- Run once in your Supabase project's SQL editor
+        <p class="sync-note">Auto-connects using the key baked into this file. Open access policy on your tables — fine for personal use, just don't share the URL/key. If you already ran the setup SQL before, re-run it — it's additive and safe (adds the new categories table and date_end column).</p>
+        <pre id="setupSql" style="display:none;">-- Run once (or re-run — it's additive) in your Supabase project's SQL editor
 
 create table if not exists todo_tasks (
   id text primary key,
@@ -244,17 +269,33 @@ create table if not exists destinations (
   updated_at timestamptz default now()
 );
 
+create table if not exists categories (
+  id text primary key,
+  label text not null,
+  color text not null default '#8a8579',
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
 alter table todo_tasks enable row level security;
 alter table trip_status enable row level security;
 alter table destinations enable row level security;
+alter table categories enable row level security;
+
+drop policy if exists "allow all todo_tasks" on todo_tasks;
+drop policy if exists "allow all trip_status" on trip_status;
+drop policy if exists "allow all destinations" on destinations;
+drop policy if exists "allow all categories" on categories;
 
 create policy "allow all todo_tasks" on todo_tasks for all using (true) with check (true);
 create policy "allow all trip_status" on trip_status for all using (true) with check (true);
 create policy "allow all destinations" on destinations for all using (true) with check (true);
+create policy "allow all categories" on categories for all using (true) with check (true);
 
 alter publication supabase_realtime add table todo_tasks;
 alter publication supabase_realtime add table trip_status;
-alter publication supabase_realtime add table destinations;</pre>
+alter publication supabase_realtime add table destinations;
+alter publication supabase_realtime add table categories;</pre>
       </div>
       <div id="syncConnectedInfo" style="display:none;">
         <p id="syncConnectedText" class="sync-note"></p>
@@ -280,11 +321,6 @@ alter publication supabase_realtime add table destinations;</pre>
       <label for="categoryInput">Category</label>
       <select id="categoryInput">
         <option value="">No category</option>
-        <option value="work">Work</option>
-        <option value="travel">Travel</option>
-        <option value="camp">Camp</option>
-        <option value="personal">Personal</option>
-        <option value="other">Other</option>
       </select>
     </div>
     <div class="field">
@@ -317,11 +353,6 @@ alter publication supabase_realtime add table destinations;</pre>
       <select id="categoryFilter">
         <option value="all">All categories</option>
         <option value="none">No category</option>
-        <option value="work">Work</option>
-        <option value="travel">Travel</option>
-        <option value="camp">Camp</option>
-        <option value="personal">Personal</option>
-        <option value="other">Other</option>
       </select>
       <select id="filterSelect">
         <option value="upcoming">Upcoming (next 14 days)</option>
@@ -340,27 +371,29 @@ alter publication supabase_realtime add table destinations;</pre>
   const STORAGE_KEY = 'weekTodoApp.tasks';
   const STATUS_KEY = 'weekTodoApp.tripStatus';
   const DEST_KEY = 'weekTodoApp.destinations';
+  const CATEGORIES_KEY = 'weekTodoApp.categories';
   const SUPA_URL_KEY = 'weekTodoApp.supabaseUrl';
   const SUPA_ANON_KEY = 'weekTodoApp.supabaseAnonKey';
   const SUPA_DISABLED_KEY = 'weekTodoApp.supabaseDisabled';
   const DEFAULT_SUPA_URL = 'https://ywjtbzxfdudrqsvsslzs.supabase.co';
   const DEFAULT_SUPA_KEY = 'sb_publishable_Vt5ul1fZGuwxG8zq_ejyNw_kJackpiu';
 
-  const CATEGORIES = {
-    work: { label: 'Work', color: 'var(--cat-work)' },
-    travel: { label: 'Travel', color: 'var(--cat-travel)' },
-    camp: { label: 'Camp', color: 'var(--cat-camp)' },
-    personal: { label: 'Personal', color: 'var(--cat-personal)' },
-    other: { label: 'Other', color: 'var(--cat-other)' }
-  };
+  const DEFAULT_CATEGORIES = [
+    { id: 'work', label: 'Work', color: '#4d6f96' },
+    { id: 'travel', label: 'Travel', color: '#a87a3a' },
+    { id: 'camp', label: 'Camp', color: '#4a6b5a' },
+    { id: 'personal', label: 'Personal', color: '#8a5b8f' },
+    { id: 'other', label: 'Other', color: '#8a8579' }
+  ];
 
   let tasks = load();
   let destinations = loadDestinations();
+  let categories = loadCategories();
   let weekStart = startOfWeek(new Date());
   let selectedDays = new Set();
   let editingTaskId = null;
   let supaClient = null;
-  let supaChannelTasks = null, supaChannelStatus = null, supaChannelDest = null;
+  let supaChannelTasks = null, supaChannelStatus = null, supaChannelDest = null, supaChannelCats = null;
 
   const weekGrid = document.getElementById('weekGrid');
   const rangeLabel = document.getElementById('rangeLabel');
@@ -372,10 +405,12 @@ alter publication supabase_realtime add table destinations;</pre>
   const formTitle = document.getElementById('formTitle');
   const filterSelect = document.getElementById('filterSelect');
   const categoryFilter = document.getElementById('categoryFilter');
+  const categoryInput = document.getElementById('categoryInput');
   const unscheduledWrap = document.getElementById('unscheduledWrap');
   const unscheduledItems = document.getElementById('unscheduledItems');
   const roadmapList = document.getElementById('roadmapList');
   const roadmapNextPreview = document.getElementById('roadmapNextPreview');
+  const categoriesManageList = document.getElementById('categoriesManageList');
 
   document.getElementById('prevBtn').addEventListener('click', () => { weekStart = addDays(weekStart, -7); render(); });
   document.getElementById('nextBtn').addEventListener('click', () => { weekStart = addDays(weekStart, 7); render(); });
@@ -387,7 +422,7 @@ alter publication supabase_realtime add table destinations;</pre>
   addForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const title = document.getElementById('titleInput').value.trim();
-    const category = document.getElementById('categoryInput').value;
+    const category = categoryInput.value;
     const date = document.getElementById('dateInput').value || null;
     let dateEnd = document.getElementById('dateEndInput').value || null;
     const time = document.getElementById('timeInput').value;
@@ -417,7 +452,7 @@ alter publication supabase_realtime add table destinations;</pre>
   function startEdit(t) {
     editingTaskId = t.id;
     document.getElementById('titleInput').value = t.title;
-    document.getElementById('categoryInput').value = t.category || '';
+    categoryInput.value = t.category || '';
     document.getElementById('dateInput').value = t.date || '';
     document.getElementById('dateEndInput').value = t.dateEnd || '';
     document.getElementById('timeInput').value = t.time || '';
@@ -434,6 +469,103 @@ alter publication supabase_realtime add table destinations;</pre>
     submitBtn.textContent = 'Add';
     formTitle.textContent = 'Add a task';
     cancelEditBtn.style.display = 'none';
+  }
+
+  // ---- Categories ----
+  function loadCategories() {
+    try {
+      const raw = localStorage.getItem(CATEGORIES_KEY);
+      if (raw) { const parsed = JSON.parse(raw); if (Array.isArray(parsed) && parsed.length) return parsed; }
+    } catch (e) {}
+    return DEFAULT_CATEGORIES.slice();
+  }
+  function saveCategories() { localStorage.setItem(CATEGORIES_KEY, JSON.stringify(categories)); }
+  function getCategory(id) {
+    if (!id) return null;
+    return categories.find(c => c.id === id) || { id, label: id, color: '#8a8579' };
+  }
+  function categoryColor(id) {
+    if (id) { const c = getCategory(id); if (c) return c.color; }
+    const fallback = categories.find(c => c.id === 'other');
+    return fallback ? fallback.color : '#8a8579';
+  }
+  function slugify(label) {
+    let base = label.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    if (!base) base = 'category';
+    let id = base, n = 1;
+    while (categories.some(c => c.id === id)) { id = base + '-' + (++n); }
+    return id;
+  }
+
+  document.getElementById('addCatBtn').addEventListener('click', () => {
+    const labelEl = document.getElementById('newCatLabel');
+    const colorEl = document.getElementById('newCatColor');
+    const label = labelEl.value.trim();
+    if (!label) return;
+    const c = { id: slugify(label), label, color: colorEl.value };
+    categories.push(c);
+    saveCategories();
+    syncCategoryUpsert(c);
+    labelEl.value = '';
+    colorEl.value = '#4a6b5a';
+    refreshCategoryUI();
+  });
+
+  function renderCategoriesManage() {
+    categoriesManageList.innerHTML = '';
+    if (categories.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'cat-manage-empty';
+      empty.textContent = 'No categories yet — add one below.';
+      categoriesManageList.appendChild(empty);
+      return;
+    }
+    categories.forEach(c => {
+      const row = document.createElement('div');
+      row.className = 'cat-manage-row';
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color'; colorInput.value = c.color;
+      colorInput.addEventListener('input', () => { c.color = colorInput.value; saveCategories(); syncCategoryUpsert(c); render(); });
+      const labelInput = document.createElement('input');
+      labelInput.type = 'text'; labelInput.value = c.label;
+      labelInput.addEventListener('change', () => { c.label = labelInput.value.trim() || c.label; saveCategories(); syncCategoryUpsert(c); refreshCategoryUI(); });
+      const delBtn = document.createElement('button');
+      delBtn.className = 'cm-del'; delBtn.textContent = 'Delete';
+      delBtn.addEventListener('click', () => {
+        categories = categories.filter(x => x.id !== c.id);
+        saveCategories();
+        syncCategoryDelete(c.id);
+        refreshCategoryUI();
+      });
+      row.appendChild(colorInput); row.appendChild(labelInput); row.appendChild(delBtn);
+      categoriesManageList.appendChild(row);
+    });
+  }
+
+  function rebuildCategorySelects() {
+    const currentVal = categoryInput.value;
+    categoryInput.innerHTML = '<option value="">No category</option>';
+    categories.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id; opt.textContent = c.label;
+      categoryInput.appendChild(opt);
+    });
+    if ([...categoryInput.options].some(o => o.value === currentVal)) categoryInput.value = currentVal;
+
+    const currentFilterVal = categoryFilter.value;
+    categoryFilter.innerHTML = '<option value="all">All categories</option><option value="none">No category</option>';
+    categories.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id; opt.textContent = c.label;
+      categoryFilter.appendChild(opt);
+    });
+    if ([...categoryFilter.options].some(o => o.value === currentFilterVal)) categoryFilter.value = currentFilterVal;
+  }
+
+  function refreshCategoryUI() {
+    renderCategoriesManage();
+    rebuildCategorySelects();
+    render();
   }
 
   // ---- Trip status (currently in) ----
@@ -655,23 +787,26 @@ alter publication supabase_realtime add table destinations;</pre>
 
       const dayTasks = tasks.filter(t => t.date && (t.dateEnd ? (iso >= t.date && iso <= t.dateEnd) : iso === t.date))
         .sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99'));
+      const dueElsewhere = tasks.filter(t => t.deadline === iso && !t.done && !dayTasks.includes(t));
 
-      if (dayTasks.length === 0) {
+      if (dayTasks.length === 0 && dueElsewhere.length === 0) {
         const empty = document.createElement('div');
         empty.className = 'day-empty';
         empty.textContent = '—';
         col.appendChild(empty);
       } else {
         dayTasks.forEach(t => {
+          const isDueToday = t.deadline === iso;
           const item = document.createElement('div');
-          item.className = 'day-task' + (t.done ? ' done' : '');
-          item.style.borderLeftColor = (CATEGORIES[t.category] || CATEGORIES.other).color;
+          item.className = 'day-task' + (t.done ? ' done' : '') + (isDueToday ? ' due-highlight' : '');
+          item.style.borderLeftColor = isDueToday ? 'var(--danger)' : categoryColor(t.category);
           item.draggable = true;
           item.dataset.id = t.id;
           item.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', JSON.stringify({ id: t.id, sourceIso: iso })); });
 
           const body = document.createElement('div');
-          body.innerHTML = (t.time ? `<span class="t-time">${formatTime12(t.time)}</span>` : '') +
+          body.innerHTML = (isDueToday ? '<span class="t-due-label">Due today</span>' : '') +
+            (t.time ? `<span class="t-time">${formatTime12(t.time)}</span>` : '') +
             `<span>${escapeHtml(t.title)}</span>` +
             (t.loc ? `<span class="t-loc">${escapeHtml(t.loc)}</span>` : '') +
             (t.dateEnd ? `<span class="t-range">${formatDateShort(t.date)} – ${formatDateShort(t.dateEnd)}</span>` : '');
@@ -694,6 +829,24 @@ alter publication supabase_realtime add table destinations;</pre>
 
           col.appendChild(item);
         });
+
+        dueElsewhere.forEach(t => {
+          const item = document.createElement('div');
+          item.className = 'day-task due-highlight';
+          item.style.borderLeftColor = 'var(--danger)';
+          const body = document.createElement('div');
+          body.innerHTML = '<span class="t-due-label">Due today</span>' + `<span>${escapeHtml(t.title)}</span>`;
+          body.addEventListener('click', () => { t.done = !t.done; save(); syncTaskUpsert(t); render(); });
+          item.appendChild(body);
+          const moveRow = document.createElement('div');
+          moveRow.className = 't-move';
+          const editIcon = document.createElement('button');
+          editIcon.type = 'button'; editIcon.textContent = '✎'; editIcon.title = 'Edit task';
+          editIcon.addEventListener('click', (e) => { e.stopPropagation(); startEdit(t); });
+          moveRow.appendChild(editIcon);
+          item.appendChild(moveRow);
+          col.appendChild(item);
+        });
       }
       weekGrid.appendChild(col);
     }
@@ -714,7 +867,7 @@ alter publication supabase_realtime add table destinations;</pre>
       const overdue = t.deadline && t.deadline < todayIso;
       const chip = document.createElement('div');
       chip.className = 'unscheduled-chip' + (overdue ? ' overdue' : '');
-      chip.style.borderLeftColor = (CATEGORIES[t.category] || CATEGORIES.other).color;
+      chip.style.borderLeftColor = categoryColor(t.category);
       chip.draggable = true;
       chip.dataset.id = t.id;
       chip.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', JSON.stringify({ id: t.id })); });
@@ -775,7 +928,7 @@ alter publication supabase_realtime add table destinations;</pre>
     visible.forEach(t => {
       const row = document.createElement('div');
       row.className = 'task-row' + (t.done ? ' done' : '');
-      row.style.borderLeftColor = (CATEGORIES[t.category] || CATEGORIES.other).color;
+      row.style.borderLeftColor = categoryColor(t.category);
       const cb = document.createElement('input');
       cb.type = 'checkbox'; cb.checked = t.done;
       cb.addEventListener('change', () => { t.done = cb.checked; save(); syncTaskUpsert(t); render(); });
@@ -786,12 +939,14 @@ alter publication supabase_realtime add table destinations;</pre>
       const titleDiv = document.createElement('div');
       titleDiv.className = 't-title'; titleDiv.textContent = t.title;
       titleRow.appendChild(titleDiv);
-      if (t.category && CATEGORIES[t.category]) {
-        const badge = document.createElement('span');
-        badge.className = 'cat-badge';
-        const catInfo = CATEGORIES[t.category];
-        badge.textContent = catInfo.label; badge.style.background = catInfo.color;
-        titleRow.appendChild(badge);
+      if (t.category) {
+        const catInfo = getCategory(t.category);
+        if (catInfo) {
+          const badge = document.createElement('span');
+          badge.className = 'cat-badge';
+          badge.textContent = catInfo.label; badge.style.background = catInfo.color;
+          titleRow.appendChild(badge);
+        }
       }
       const metaDiv = document.createElement('div');
       metaDiv.className = 't-meta';
@@ -851,22 +1006,28 @@ alter publication supabase_realtime add table destinations;</pre>
   function statusToRow(s) { return { currently_in: s.statusHere || null, currently_in_start: s.statusHereStart || null, currently_in_end: s.statusHereEnd || null, updated_at: new Date().toISOString() }; }
   function rowToDest(r) { return { id: r.id, location: r.location, startDate: r.start_date, endDate: r.end_date }; }
   function destToRow(d) { return { id: d.id, location: d.location, start_date: d.startDate || null, end_date: d.endDate || null, updated_at: new Date().toISOString() }; }
+  function rowToCategory(r) { return { id: r.id, label: r.label, color: r.color }; }
+  function categoryToRow(c) { return { id: c.id, label: c.label, color: c.color, updated_at: new Date().toISOString() }; }
 
   async function syncTaskUpsert(t) { if (!supaClient) return; const { error } = await supaClient.from('todo_tasks').upsert([taskToRow(t)]); if (error) console.error(error); }
   async function syncTaskDelete(id) { if (!supaClient) return; const { error } = await supaClient.from('todo_tasks').delete().eq('id', id); if (error) console.error(error); }
   async function syncStatusUpsert() { if (!supaClient) return; const { error } = await supaClient.from('trip_status').upsert([{ id: 'main', ...statusToRow(tripStatus) }]); if (error) console.error(error); }
   async function syncDestUpsert(d) { if (!supaClient) return; const { error } = await supaClient.from('destinations').upsert([destToRow(d)]); if (error) console.error(error); }
   async function syncDestDelete(id) { if (!supaClient) return; const { error } = await supaClient.from('destinations').delete().eq('id', id); if (error) console.error(error); }
+  async function syncCategoryUpsert(c) { if (!supaClient) return; try { const { error } = await supaClient.from('categories').upsert([categoryToRow(c)]); if (error) throw error; } catch (e) { console.error('Category sync skipped (run updated setup SQL):', e); } }
+  async function syncCategoryDelete(id) { if (!supaClient) return; try { const { error } = await supaClient.from('categories').delete().eq('id', id); if (error) throw error; } catch (e) { console.error('Category sync skipped (run updated setup SQL):', e); } }
   const debouncedStatusSync = debounce(syncStatusUpsert, 800);
 
   async function refetchTasks() { if (!supaClient) return; const { data, error } = await supaClient.from('todo_tasks').select('*'); if (error) { console.error(error); return; } if (data) { tasks = data.map(rowToTask); save(); render(); } }
   async function refetchStatus() { if (!supaClient) return; const { data, error } = await supaClient.from('trip_status').select('*').eq('id', 'main').limit(1); if (error) { console.error(error); return; } if (data && data[0]) { Object.assign(tripStatus, rowToStatus(data[0])); persistStatusLocal(); fillStatusInputs(); renderWeek(); } }
   async function refetchDest() { if (!supaClient) return; const { data, error } = await supaClient.from('destinations').select('*'); if (error) { console.error(error); return; } if (data) { destinations = data.map(rowToDest); saveDestinations(); render(); } }
+  async function refetchCategories() { if (!supaClient) return; try { const { data, error } = await supaClient.from('categories').select('*').order('created_at', { ascending: true }); if (error) throw error; if (data && data.length) { categories = data.map(rowToCategory); saveCategories(); refreshCategoryUI(); } } catch (e) { console.error('Category refetch skipped:', e); } }
 
   function subscribeRealtime() {
     supaChannelTasks = supaClient.channel('todo_tasks_sync').on('postgres_changes', { event: '*', schema: 'public', table: 'todo_tasks' }, refetchTasks).subscribe();
     supaChannelStatus = supaClient.channel('trip_status_sync').on('postgres_changes', { event: '*', schema: 'public', table: 'trip_status' }, refetchStatus).subscribe();
     supaChannelDest = supaClient.channel('destinations_sync').on('postgres_changes', { event: '*', schema: 'public', table: 'destinations' }, refetchDest).subscribe();
+    supaChannelCats = supaClient.channel('categories_sync').on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, refetchCategories).subscribe();
   }
 
   async function connectSupabase(url, key, opts) {
@@ -895,12 +1056,23 @@ alter publication supabase_realtime add table destinations;</pre>
       if (remoteDest && remoteDest.length > 0) { destinations = remoteDest.map(rowToDest); saveDestinations(); }
       else if (destinations.length > 0) { await supaClient.from('destinations').upsert(destinations.map(destToRow)); }
 
+      try {
+        const { data: remoteCats, error: catsErr } = await supaClient.from('categories').select('*').order('created_at', { ascending: true });
+        if (catsErr) throw catsErr;
+        if (remoteCats && remoteCats.length > 0) { categories = remoteCats.map(rowToCategory); saveCategories(); }
+        else if (categories.length > 0) { await supaClient.from('categories').upsert(categories.map(categoryToRow)); }
+      } catch (catErr) {
+        console.error('Categories sync unavailable — run the updated setup SQL to enable it:', catErr);
+      }
+
       subscribeRealtime();
       setSyncStatus('Connected');
       syncConnectForm.style.display = 'none';
       syncConnectedInfo.style.display = 'block';
       let host = url; try { host = new URL(url).host; } catch (e) {}
       syncConnectedText.textContent = 'Connected to ' + host + '. Changes sync automatically across any device that loads this app.';
+      rebuildCategorySelects();
+      renderCategoriesManage();
       render();
     } catch (err) {
       console.error(err);
@@ -915,6 +1087,7 @@ alter publication supabase_realtime add table destinations;</pre>
       if (supaChannelTasks) supaClient.removeChannel(supaChannelTasks);
       if (supaChannelStatus) supaClient.removeChannel(supaChannelStatus);
       if (supaChannelDest) supaClient.removeChannel(supaChannelDest);
+      if (supaChannelCats) supaClient.removeChannel(supaChannelCats);
     }
     supaClient = null;
     localStorage.setItem(SUPA_DISABLED_KEY, '1');
@@ -934,6 +1107,8 @@ alter publication supabase_realtime add table destinations;</pre>
     }
   }
 
+  renderCategoriesManage();
+  rebuildCategorySelects();
   render();
   initSupabaseFromStorage();
 })();
